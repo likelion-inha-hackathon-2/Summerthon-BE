@@ -1,0 +1,1 @@
+web: gunicron taxi_project.wsgi --log-file-

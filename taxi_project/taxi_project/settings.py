@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-
+import dj-database-url
 import json
 from django.core.exceptions import ImproperlyConfigured
 import os
@@ -40,9 +40,9 @@ def get_secret(setting,secrets_dict = secrets):
 SECRET_KEY = get_secret('SECRET_KEY') 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1', '3.36.172.57'] # 탄력적 ip
+ALLOWED_HOSTS = ['localhost','127.0.0.1', '3.36.172.57', '.herokuapp.com'] # 탄력적 ip
 
 # Application definition
 
@@ -63,6 +63,7 @@ INSTALLED_APPS = [
 AUTH_USER_MODEL = 'myAPP.User'
 
 MIDDLEWARE = [
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -103,6 +104,9 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASE['default'].update(db_from_env)
 
 
 # Password validation
